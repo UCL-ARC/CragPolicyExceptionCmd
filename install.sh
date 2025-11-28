@@ -12,7 +12,7 @@ function check_for_go () {
         source /etc/profile.d/modules.sh
         module purge
         module load gcc-libs
-        module load compilers/go/1.16.5
+        module load compilers/go/1.25.4
     else
         echo "Could not get a go compiler, exiting..." >&2
         exit 1
@@ -32,8 +32,13 @@ echo "Changing into \"$(dirname -- "$0")\"..." >&2
 cd "$(dirname -- "$0")"
 
 echo "Recreating go.mod and go.sum..." >&2
-go mod init github.com/UCL-RITS/CragPolicyExceptionCmd
-go mod tidy
+if [[ ! -r "go.mod" ]]; then 
+    go mod init github.com/UCL-RITS/CragPolicyExceptionCmd
+    go mod edit -require="github.com/olekukonko/tablewriter@v0.0.5" # this is the stable "legacy" version before an API change
+fi
+if [[ ! -r "go.sum" ]]; then
+    go mod tidy
+fi
 
 echo "Building..." >&2
 ./build.sh

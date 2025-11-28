@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/alecthomas/kingpin.v2"
+	"github.com/alecthomas/kingpin/v2"
 )
 
 // TODO: I feel like there *should* be an edit option, but I'm not sure how it should work.
