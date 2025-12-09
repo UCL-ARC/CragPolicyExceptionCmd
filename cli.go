@@ -81,6 +81,7 @@ var (
 
 	// This is 'c' for cluster to match the jobhist tool
 	listService = listCmd.Flag("service", "List only for one service").Short('c').String()
+	listUser    = listCmd.Flag("user", "List only for one user").Short('u').String()
 
 	attachSubcmd        = formCmd.Command("attach", "Attach a file to an exception.")
 	downloadSubcmd      = formCmd.Command("download", "Download a file by file ID.")

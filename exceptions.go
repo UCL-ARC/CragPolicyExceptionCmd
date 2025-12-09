@@ -281,6 +281,12 @@ func list(kind string) {
 		db = db.Where("service = '" + (*listService) + "'")
 	}
 
+	// *listUser is a CLI arg
+	// (warning: not validated or safety-checked)
+	if *listUser != "" {
+		db = db.Where("user = '" + (*listUser) + "'")
+	}
+
 	var listSet []Exception
 	switch kind {
 	case "all":
