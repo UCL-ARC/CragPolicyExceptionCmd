@@ -32,6 +32,7 @@ var (
 	rejectCmd    = app.Command("reject", "Reject an existing exception")
 	implementCmd = app.Command("implemented", "Mark an existing exception as implemented")
 	removeCmd    = app.Command("remove", "Mark an existing exception as removed")
+	replaceCmd   = app.Command("replaced", "Mark an existing exception as replaced")
 	deleteCmd    = app.Command("delete", "Delete an existing exception.")
 	formCmd      = app.Command("form", "Handle the exception form files")
 	//	editCmd      = app.Command("edit", "Edit an existing exception")
@@ -75,7 +76,7 @@ var (
 			validExceptionTypesString+
 			")").Default("quota").String()
 
-	listOpts      = []string{"all", "undecided", "approved", "rejected", "needed", "active", "implemented", "removed", "overdue", "pending", "inconsistent", "todo"}
+	listOpts      = []string{"all", "undecided", "approved", "rejected", "needed", "active", "implemented", "removed", "replaced", "overdue", "pending", "inconsistent", "todo"}
 	listHelp      = fmt.Sprintf("Class of exception to list (%s)", strings.Join(listOpts, ", "))
 	listClassEnum = listCmd.Arg("class", listHelp).Default("all").Enum(listOpts...)
 
@@ -92,6 +93,7 @@ var (
 	approveID   = approveCmd.Arg("id", "").Required().Uint()
 	rejectID    = rejectCmd.Arg("id", "").Required().Uint()
 	removeID    = removeCmd.Arg("id", "").Required().Uint()
+	replaceID   = replaceCmd.Arg("id", "").Required().Uint()
 	implementID = implementCmd.Arg("id", "").Required().Uint()
 	deleteID    = deleteCmd.Arg("id", "").Required().Uint()
 
@@ -99,6 +101,7 @@ var (
 	approveForceFlag   = approveCmd.Flag("force", "Ignore normal transition checks.").Short('f').Bool()
 	rejectForceFlag    = rejectCmd.Flag("force", "Ignore normal transition checks.").Short('f').Bool()
 	removeForceFlag    = removeCmd.Flag("force", "Ignore normal transition checks.").Short('f').Bool()
+	replaceForceFlag   = replaceCmd.Flag("force", "Ignore normal transition checks.").Short('f').Bool()
 	implementForceFlag = implementCmd.Flag("force", "Ignore normal transition checks.").Short('f').Bool()
 
 	attachID      = attachSubcmd.Arg("id", "").Required().Uint()
@@ -186,6 +189,8 @@ func main() {
 		implement(*implementID, *implementForceFlag)
 	case removeCmd.FullCommand():
 		remove(*removeID, *removeForceFlag)
+	case replaceCmd.FullCommand():
+		replace(*replaceID, *replaceForceFlag)
 	case deleteCmd.FullCommand():
 		edelete(*deleteID) // Delete is a keeeeyword, oops
 	case attachSubcmd.FullCommand():

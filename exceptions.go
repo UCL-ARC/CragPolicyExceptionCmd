@@ -66,7 +66,7 @@ func isValidChange(oldStatus string, newStatus string) bool {
 	validChanges["(none)"] = []string{"undecided"}
 	validChanges["undecided"] = []string{"approved", "rejected"}
 	validChanges["approved"] = []string{"implemented"}
-	validChanges["implemented"] = []string{"removed"}
+	validChanges["implemented"] = []string{"removed", "replaced"}
 	validChanges["removed"] = []string{}
 	validChanges["rejected"] = []string{}
 
@@ -261,6 +261,14 @@ func remove(ID uint, force bool) {
 	}
 }
 
+func replace(ID uint, force bool) {
+	exception := GetException(ID)
+	err := exception.ChangeStatusTo("replaced", force)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func notYetImplemented() {
 	log.Fatal("This thing not yet implemented.\n")
 	panic("!")
@@ -317,6 +325,9 @@ func list(kind string) {
 		printExceptionTableSummary(listSet)
 	case "removed":
 		db.Where("status = 'removed'").Find(&listSet)
+		printExceptionTableSummary(listSet)
+	case "replaced":
+		db.Where("status = 'replaced'").Find(&listSet)
 		printExceptionTableSummary(listSet)
 	case "todo":
 		db.Where("(status = 'implemented' AND end_date < " + timeNow + ") OR (status = 'approved' AND start_date > " + timeNow + ") OR (status = 'undecided')").Find(&listSet)
