@@ -7,9 +7,12 @@ import (
 )
 
 // We could maintain a list, but ccspapp and ccspap2 are
-//  both in the ccsp group
+//
+//	both in the ccsp group
+//
 // An alternative approach that would be more work would be
-//  to look them up in AD or something
+//
+//	to look them up in AD or something
 func userIsServiceUser() bool {
 	currentUser, err := user.Current()
 	if err != nil {
@@ -36,7 +39,9 @@ func userIsServiceUser() bool {
 	//  but it's 215.
 	// Yes, blame me if this causes a problem.
 	//  --Ian
-	ccspGid := 215
+	// This later caused a problem when the GIDs were changed. It's now 6273.
+	//  --Ian
+	ccspGid := 6273
 	gid, err := strconv.Atoi(currentUser.Gid)
 	if err != nil {
 		log.Fatal("Could not get current gid: ", err)
