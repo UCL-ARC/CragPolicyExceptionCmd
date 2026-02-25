@@ -18,7 +18,12 @@ func userIsServiceUser() bool {
 	if err != nil {
 		log.Fatal("Could not get the current user's details")
 	}
-	if currentUser.Username == "SYSTEM" {
+	switch currentUser.Username {
+	case "SYSTEM":
+		return true
+	case "ccspapp":
+		return true
+	case "ccspap2":
 		return true
 	}
 
@@ -32,21 +37,6 @@ func userIsServiceUser() bool {
 	// Not 100% sure about this, but I think it's fine
 	//  Revised downwards from 1024 for local computers
 	if uid < 501 {
-		return true
-	}
-
-	// Yes I could do some stuff to look this up and convert it
-	//  but it's 215.
-	// Yes, blame me if this causes a problem.
-	//  --Ian
-	// This later caused a problem when the GIDs were changed. It's now 6273.
-	//  --Ian
-	ccspGid := 6273
-	gid, err := strconv.Atoi(currentUser.Gid)
-	if err != nil {
-		log.Fatal("Could not get current gid: ", err)
-	}
-	if gid == ccspGid {
 		return true
 	}
 
