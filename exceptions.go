@@ -292,7 +292,7 @@ func list(kind string) {
 	// *listUser is a CLI arg
 	// (warning: not validated or safety-checked)
 	if *listUser != "" {
-		db = db.Where("user = '" + (*listUser) + "'")
+		db = db.Where("username = '" + (*listUser) + "'")
 	}
 
 	var listSet []Exception
